@@ -1,0 +1,5 @@
+# Ignorar carpeta de estado y datos locales de Vagrant
+.vagrant/
+
+# Ignorar archivos de log
+*.log
