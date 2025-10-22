@@ -1,32 +1,113 @@
-VAGRANTFILE_API_VERSION = "2"
+Vagrant.configure("2") do |config|
+  # Configuración para Master1
+  config.vm.define "Master1" do |server|
+    server.vm.box = "debian/bookworm64"
+    server.vm.hostname = "master1"
+    server.vm.network "public_network", ip: "192.168.0.101"
 
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-
-  # Prefijo de red (cambia aquí si necesitas otra subnet)
-  network_prefix = "172.30.108"
-
-  # Definición centralizada de nodos con nombre, IP y rol
-  nodes = [
-    { name: "master1", ip: "#{network_prefix}.121", role: "master" },
-    { name: "master2", ip: "#{network_prefix}.122", role: "master" },
-    { name: "master3", ip: "#{network_prefix}.123", role: "master" },
-    { name: "worker1", ip: "#{network_prefix}.131", role: "worker" },
-    { name: "worker2", ip: "#{network_prefix}.132", role: "worker" }
-  ]
-
-  # Configuración base común para todas las VMs
-  config.vm.box = "generic/debian12"
-  
-  nodes.each do |node|
-    config.vm.define node[:name] do |vm|
-      vm.vm.hostname = node[:name]
-      vm.vm.network "public_network", ip: node[:ip]
-      vm.vm.provider "virtualbox" do |vb|
-        vb.name = "k8s-#{node[:name]}"
-        vb.memory = 2048
-        vb.cpus = 2
-      end
+    server.vm.provider "virtualbox" do |vb|
+      vb.memory = 2048
+      vb.cpus = 2
+      vb.name = "Master1"
+      vb.customize ["modifyvm", :id, "--name", "Master1"]
     end
+
+    server.vm.provision "shell", path: "provision.sh"
   end
 
+  # Configuración para Master2
+  config.vm.define "Master2" do |server|
+    server.vm.box = "debian/bookworm64"
+    server.vm.hostname = "master2"
+    server.vm.network "public_network", ip: "192.168.0.102"
+
+    server.vm.provider "virtualbox" do |vb|
+      vb.memory = 2048
+      vb.cpus = 2
+      vb.name = "Master2"
+      vb.customize ["modifyvm", :id, "--name", "Master2"]
+    end
+
+    server.vm.provision "shell", path: "provision.sh"
+  end
+
+  # Configuración para Master3
+  config.vm.define "Master3" do |server|
+    server.vm.box = "debian/bookworm64"
+    server.vm.hostname = "master3"
+    server.vm.network "public_network", ip: "192.168.0.103"
+
+    server.vm.provider "virtualbox" do |vb|
+      vb.memory = 2048
+      vb.cpus = 2
+      vb.name = "Master3"
+      vb.customize ["modifyvm", :id, "--name", "Master3"]
+    end
+
+    server.vm.provision "shell", path: "provision.sh"
+  end
+
+  # Configuración para Worker1
+  config.vm.define "Worker1" do |server|
+    server.vm.box = "debian/bookworm64"
+    server.vm.hostname = "worker1"
+    server.vm.network "public_network", ip: "192.168.0.104"
+
+    server.vm.provider "virtualbox" do |vb|
+      vb.memory = 2048
+      vb.cpus = 2
+      vb.name = "Worker1"
+      vb.customize ["modifyvm", :id, "--name", "Worker1"]
+    end
+
+    server.vm.provision "shell", path: "provision.sh"
+  end
+
+  # Configuración para Worker2
+  config.vm.define "Worker2" do |server|
+    server.vm.box = "debian/bookworm64"
+    server.vm.hostname = "worker2"
+    server.vm.network "public_network", ip: "192.168.0.105"
+
+    server.vm.provider "virtualbox" do |vb|
+      vb.memory = 2048
+      vb.cpus = 2
+      vb.name = "Worker2"
+      vb.customize ["modifyvm", :id, "--name", "Worker2"]
+    end
+
+    server.vm.provision "shell", path: "provision.sh"
+  end
+
+  # Configuración para Worker3
+  config.vm.define "Worker3" do |server|
+    server.vm.box = "debian/bookworm64"
+    server.vm.hostname = "worker3"
+    server.vm.network "public_network", ip: "192.168.0.106"
+
+    server.vm.provider "virtualbox" do |vb|
+      vb.memory = 2048
+      vb.cpus = 2
+      vb.name = "Worker3"
+      vb.customize ["modifyvm", :id, "--name", "Worker3"]
+    end
+
+    server.vm.provision "shell", path: "provision.sh"
+  end
+
+  # Configuración para LoadBalancer
+  config.vm.define "LoadBalancer" do |server|
+    server.vm.box = "debian/bookworm64"
+    server.vm.hostname = "loadbalancer"
+    server.vm.network "public_network", ip: "192.168.0.107"
+
+    server.vm.provider "virtualbox" do |vb|
+      vb.memory = 2048
+      vb.cpus = 2
+      vb.name = "LoadBalancer"
+      vb.customize ["modifyvm", :id, "--name", "LoadBalancer"]
+    end
+
+    server.vm.provision "shell", path: "provision.sh"
+  end
 end
