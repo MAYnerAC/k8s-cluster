@@ -1,5 +1,5 @@
 # Centralizar tres primeros octetos
-network_prefix = "172.30.106"
+network_prefix = "172.30.105"
 
 # VMs config (IP, nombre, memoria, CPUs)
 machines = [
