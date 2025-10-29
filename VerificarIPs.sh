@@ -1,5 +1,5 @@
 for ($i=100; $i -le 254; $i++) { # 1 - 254
-    $ip = "172.30.105.$i"  # 192.168.0.$i
+    $ip = "172.30.106.$i"  # 192.168.0.$i
     $pingResult = Test-Connection -ComputerName $ip -Count 1 -Quiet
     if ($pingResult) {
         Write-Host "$ip en uso (Ocupada)"
