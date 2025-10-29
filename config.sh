@@ -4,7 +4,7 @@ echo -e "\n=========================================== config.sh ===============
 
 # Actualizar el sistema
 sudo apt update
-# sudo apt upgrade -y
+sudo apt upgrade -y
 
 
 # Asegurar que los archivos de configuración de ssh se manejen adecuadamente
