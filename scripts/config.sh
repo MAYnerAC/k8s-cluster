@@ -25,6 +25,13 @@ sudo apt upgrade -y
 # Cambiar el hostname
 # sudo hostnamectl set-hostname anahua # (En Vagrantfile)
 
+# Configurar la sincronización de hora
+sudo timedatectl status
+sudo timedatectl set-ntp true
+
+# Zona horaria a America/Lima
+sudo timedatectl set-timezone America/Lima
+
 # Establecer contraseña root
 echo "root:Upt2025" | sudo chpasswd
 
