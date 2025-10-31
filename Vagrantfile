@@ -14,9 +14,9 @@ machines = [
   { name: "Worker3", hostname: "worker3", ip: "#{network_prefix}.106", memory: 2048, cpus: 2 },
 
   # ETCDs(3)
-  { name: "ETCD1", hostname: "etcd1", ip: "#{network_prefix}.107", memory: 2048, cpus: 2 },
-  { name: "ETCD2", hostname: "etcd2", ip: "#{network_prefix}.108", memory: 2048, cpus: 2 },
-  { name: "ETCD3", hostname: "etcd3", ip: "#{network_prefix}.109", memory: 2048, cpus: 2 },
+#  { name: "ETCD1", hostname: "etcd1", ip: "#{network_prefix}.107", memory: 2048, cpus: 2 },
+#  { name: "ETCD2", hostname: "etcd2", ip: "#{network_prefix}.108", memory: 2048, cpus: 2 },
+#  { name: "ETCD3", hostname: "etcd3", ip: "#{network_prefix}.109", memory: 2048, cpus: 2 },
 
   # LoadBalancer(1)
   { name: "LoadBalancer", hostname: "loadbalancer", ip: "#{network_prefix}.110", memory: 2048, cpus: 2 }
