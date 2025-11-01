@@ -11,4 +11,7 @@ bash /vagrant/scripts/config.sh
 # Llamar al script docker.sh para instalar Docker
 # bash /vagrant/scripts/docker.sh
 
+# Llamar al script kubernetes.sh para instalar Kubernetes
+bash /vagrant/scripts/kubernetes.sh
+
 echo -e "=========================================== Final: $(whoami) ===========================================\n"

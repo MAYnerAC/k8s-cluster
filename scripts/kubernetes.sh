@@ -57,11 +57,11 @@ apt-mark hold kubelet kubeadm kubectl
 systemctl enable --now kubelet
 
 # Seleccionar la segunda IP, que corresponde a eth1 (red principal)
-# se ignoran 127.0.0.1 (loopback) y eth0 (NAT de Vagrant)
+# se ignoran 127.0.0.1 (loopback) y eth0 (NAT de Vagrant), usamos eth1 (Adaptador puente)
 IP=$(hostname -I | awk '{print $2}')
 HOSTNAME=$(hostname)
-# echo "$IP $HOSTNAME" >> /etc/hosts
-grep -q "$HOSTNAME" /etc/hosts || echo "$IP $HOSTNAME" >> /etc/hosts
+echo "$IP $HOSTNAME" >> /etc/hosts
+# grep -q "$HOSTNAME" /etc/hosts || echo "$IP $HOSTNAME" >> /etc/hosts
 
 # nano kubernetes.sh
 # chmod +x kubernetes.sh

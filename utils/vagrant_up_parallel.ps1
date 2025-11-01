@@ -11,4 +11,4 @@ Start-Process powershell -ArgumentList "-NoExit", "vagrant up Worker3"
 # vagrant box add debian/bookworm64
 # vagrant box list
 
-# .\utils\up_paralelo.ps1
+# .\utils\vagrant_up_parallel.ps1
