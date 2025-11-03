@@ -3,12 +3,12 @@ network_prefix = "172.30.108"
 
 # VMs config (IP, nombre, memoria, CPUs)
 machines = [
-  # Workers(3)
+  # Masters(3)
   { name: "Master1", hostname: "master1", ip: "#{network_prefix}.101", memory: 2048, cpus: 2, role: "k8s" },
   { name: "Master2", hostname: "master2", ip: "#{network_prefix}.102", memory: 2048, cpus: 2, role: "k8s" },
   { name: "Master3", hostname: "master3", ip: "#{network_prefix}.103", memory: 2048, cpus: 2, role: "k8s" },
 
-  # Masters(3)
+  # Workers(3)
   { name: "Worker1", hostname: "worker1", ip: "#{network_prefix}.104", memory: 2048, cpus: 2, role: "k8s" },
   { name: "Worker2", hostname: "worker2", ip: "#{network_prefix}.105", memory: 2048, cpus: 2, role: "k8s" },
   { name: "Worker3", hostname: "worker3", ip: "#{network_prefix}.106", memory: 2048, cpus: 2, role: "k8s" },
@@ -22,8 +22,11 @@ machines = [
   { name: "LoadBalancer", hostname: "loadbalancer", ip: "#{network_prefix}.110", memory: 2048, cpus: 2, role: "loadbalancer" }
 ]
 
+# Ansible(1) (definida fuera del arreglo)
+ansible_vm = { name: "Ansible", hostname: "ansible", ip: "#{network_prefix}.111", memory: 2048, cpus: 2, role: "ansible" }
+
 Vagrant.configure("2") do |config|
-  # Configuración para las VMs
+  # Configuración para las VMs (bucle)
   machines.each do |machine|
     config.vm.define machine[:name] do |server|
       server.vm.box = "debian/bookworm64"
@@ -37,7 +40,28 @@ Vagrant.configure("2") do |config|
         vb.customize ["modifyvm", :id, "--name", machine[:name]]
       end
 
-      server.vm.provision "shell", path: "scripts/provision.sh", args: [machine[:role]]#, [machine[:hostname]
+      server.vm.provision "shell", path: "scripts/provision.sh", args: [machine[:role], network_prefix]#, [machine[:hostname]
     end
   end
+
+  # VM para Ansible Controller
+  config.vm.define ansible_vm[:name] do |ansible|
+    ansible.vm.box = "debian/bookworm64"
+    ansible.vm.hostname = ansible_vm[:hostname]
+    ansible.vm.network "public_network", ip: ansible_vm[:ip]
+
+    ansible.vm.provider "virtualbox" do |vb|
+      vb.memory = ansible_vm[:memory]
+      vb.cpus = ansible_vm[:cpus]
+      vb.name = ansible_vm[:name]
+      vb.customize ["modifyvm", :id, "--name", ansible_vm[:name]]
+    end
+
+    ansible.vm.provision "file", source: "./ansible", destination: "/tmp/ansible", run: "always"
+    ansible.vm.provision "shell" do |shell|
+      shell.path = "./scripts/controller.sh"
+      shell.args = [ansible_vm[:role], network_prefix]
+    end
+  end
+
 end

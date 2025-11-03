@@ -1,7 +1,8 @@
 #!/bin/bash
 
 ROLE=$1
-# HOSTNAME=$2
+NETWORK_PREFIX=$2
+# HOSTNAME=$3
 
 echo -e "\n=========================================== Inicio: $(whoami) ==========================================="
 
@@ -27,6 +28,11 @@ fi
 # LoadBalancer
 if [ "$ROLE" = "loadbalancer" ]; then
     bash /vagrant/scripts/loadbalancer.sh
+fi
+
+# Ansible Controller
+if [ "$ROLE" = "ansible" ]; then
+    bash /vagrant/scripts/controller.sh "$ROLE" "$NETWORK_PREFIX"
 fi
 
 
