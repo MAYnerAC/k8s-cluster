@@ -59,7 +59,7 @@ Vagrant.configure("2") do |config|
 
     ansible.vm.provision "file", source: "./ansible", destination: "/tmp/ansible", run: "always"
     ansible.vm.provision "shell" do |shell|
-      shell.path = "./scripts/controller.sh"
+      shell.path = "./scripts/provision.sh"
       shell.args = [ansible_vm[:role], network_prefix]
     end
   end
