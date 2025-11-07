@@ -6,6 +6,9 @@ echo -e "\n=========================================== config.sh ===============
 sudo apt update
 sudo apt upgrade -y
 
+# Instalar zstd
+# sudo apt install -y zstd
+# sudo update-initramfs -u
 
 # Asegurar que los archivos de configuración de ssh se manejen adecuadamente
 ### sudo apt-get -o Dpkg::Options::="--force-confnew" upgrade -y
