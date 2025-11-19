@@ -27,7 +27,7 @@ fi
 
 # LoadBalancer
 if [ "$ROLE" = "loadbalancer" ]; then
-    bash /vagrant/scripts/loadbalancer.sh
+    bash /vagrant/scripts/loadbalancer.sh "$ROLE" "$NETWORK_PREFIX"
 fi
 
 # Ansible Controller
