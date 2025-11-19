@@ -35,5 +35,10 @@ if [ "$ROLE" = "ansible" ]; then
     bash /vagrant/scripts/controller.sh "$ROLE" "$NETWORK_PREFIX"
 fi
 
+# Interfaces
+cat /etc/network/interfaces
+
+# Resolución DNS
+cat /etc/resolv.conf
 
 echo -e "=========================================== Final: $(whoami) ===========================================\n"
