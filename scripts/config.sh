@@ -1,5 +1,8 @@
 #!/bin/bash
 
+ROLE=$1
+NETWORK_PREFIX=$2
+
 echo -e "\n=========================================== config.sh ===========================================\n"
 
 # Actualizar el sistema
@@ -57,3 +60,15 @@ sudo systemctl restart ssh
 
 # Otros paquetes
 # sudo apt install -y 
+
+# Agregar gateway
+# sudo sed -i "/#VAGRANT-END/i \\      gateway ${NETWORK_PREFIX}.1" /etc/network/interfaces
+# sudo sed -i '/#VAGRANT-END/i \      gateway ${NETWORK_PREFIX}.1' /etc/network/interfaces
+sudo sed -i "/#VAGRANT-END/i \      gateway ${NETWORK_PREFIX}.1" /etc/network/interfaces
+
+sudo systemctl restart networking
+
+# Configurar DNS
+cat <<EOF > /etc/resolv.conf
+nameserver 8.8.8.8
+EOF

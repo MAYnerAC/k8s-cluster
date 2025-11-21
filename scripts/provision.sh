@@ -10,7 +10,7 @@ echo -e "\n=========================================== Inicio: $(whoami) =======
 # sudo su -
 
 # Llamar al script config.sh
-bash /vagrant/scripts/config.sh
+bash /vagrant/scripts/config.sh "$ROLE" "$NETWORK_PREFIX"
 
 # Llamar al script docker.sh para instalar Docker
 # bash /vagrant/scripts/docker.sh
