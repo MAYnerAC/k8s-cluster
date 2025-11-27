@@ -22,7 +22,7 @@ fi
 
 # ETCDs
 if [ "$ROLE" = "etcd" ]; then
-    bash /vagrant/scripts/etcd.sh
+    bash /vagrant/scripts/etcd.sh "$ROLE" "$NETWORK_PREFIX"
 fi
 
 # LoadBalancer
