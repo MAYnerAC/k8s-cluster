@@ -124,10 +124,13 @@ END
 
 # (Opcion2)
 # Usando sshpass
-sshpass -p "Upt2025" scp ca.pem etcd.pem etcd-key.pem root@192.168.0.107:/var/lib/etcd/
-sshpass -p "Upt2025" scp ca.pem etcd.pem etcd-key.pem root@192.168.0.108:/var/lib/etcd/
-sshpass -p "Upt2025" scp ca.pem etcd.pem etcd-key.pem root@192.168.0.109:/var/lib/etcd/
+# sshpass -p "Upt2025" scp ca.pem etcd.pem etcd-key.pem root@192.168.0.107:/var/lib/etcd/
+# sshpass -p "Upt2025" scp ca.pem etcd.pem etcd-key.pem root@192.168.0.108:/var/lib/etcd/
+# sshpass -p "Upt2025" scp ca.pem etcd.pem etcd-key.pem root@192.168.0.109:/var/lib/etcd/
 
+sshpass -p "Upt2025" scp -o StrictHostKeyChecking=no ca.pem etcd.pem etcd-key.pem root@172.30.105.107:/var/lib/etcd/
+sshpass -p "Upt2025" scp -o StrictHostKeyChecking=no ca.pem etcd.pem etcd-key.pem root@172.30.105.108:/var/lib/etcd/
+sshpass -p "Upt2025" scp -o StrictHostKeyChecking=no ca.pem etcd.pem etcd-key.pem root@172.30.105.109:/var/lib/etcd/
 
 # Mover certificados a las VMs K8s-Control-Plane "/etcd/kubernetes/pki/etcd/" 
 
