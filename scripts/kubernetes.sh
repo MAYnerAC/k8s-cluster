@@ -63,6 +63,9 @@ HOSTNAME=$(hostname)
 echo "$IP $HOSTNAME" >> /etc/hosts
 # grep -q "$HOSTNAME" /etc/hosts || echo "$IP $HOSTNAME" >> /etc/hosts
 
+# Crear el directorio para los certificados etcd
+mkdir -vp /etcd/kubernetes/pki/etcd/
+
 # nano kubernetes.sh
 # chmod +x kubernetes.sh
 # ./kubernetes.sh
