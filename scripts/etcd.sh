@@ -41,8 +41,10 @@ echo "  ETCD3_IP        : $ETCD3_IP"
 echo "----------------------------------------"
 echo ""
 
+# Instalar dependencias
+apt install -y curl sshpass
 
-# Descargar e intalar etcd
+# Descargar e instalar etcd
 
 ETCD_VER=v3.5.10
 
@@ -73,7 +75,7 @@ etcdutl version
 mkdir -p /var/lib/etcd
 
 
-: <<'END'
+# : <<'END'
 
 # Crear el servicio etcd
 cat <<EOF > /etc/systemd/system/etcd.service
@@ -110,10 +112,50 @@ sudo systemctl daemon-reload
 sudo systemctl enable etcd
 
 
+# END
+
+# Generacion de certificados (Uno por cluster etcd)
+if [ "$NODE_NAME" = "etcd1" ]; then
+
+    # Crear y entrar al directorio de certificados
+    mkdir -p /root/openssl
+    cd /root/openssl
+
+    # CA
+    openssl genrsa -out ca-key.pem 2048
+    openssl req -new -key ca-key.pem -out ca-csr.pem -subj "/CN=etcd cluster"
+    openssl x509 -req -in ca-csr.pem -out ca.pem -days 3650 -signkey ca-key.pem -sha256
+
+    # Certificado del servidor etcd
+    openssl genrsa -out etcd-key.pem 2048
+    openssl req -new -key etcd-key.pem -out etcd-csr.pem -subj "/CN=etcd"
+
+    # SAN para el cluster
+    # echo subjectAltName = DNS:localhost,IP:192.168.0.107,IP:192.168.0.108,IP:192.168.0.109,IP:127.0.0.1 > extfile.cnf
+    # echo "subjectAltName = DNS:localhost,DNS:etcd1,DNS:etcd2,DNS:etcd3,IP:${ETCD1_IP},IP:${ETCD2_IP},IP:${ETCD3_IP},IP:127.0.0.1" > extfile.cnf
+    echo "subjectAltName = DNS:localhost,IP:${ETCD1_IP},IP:${ETCD2_IP},IP:${ETCD3_IP},IP:127.0.0.1" > extfile.cnf
+
+    # Firmar certificado
+    openssl x509 -req -in etcd-csr.pem -CA ca.pem -CAkey ca-key.pem -CAcreateserial -days 3650 -out etcd.pem -sha256 -extfile extfile.cnf
+
+    # cd /var/lib/etcd/
+    # cd /root/openssl
+    sshpass -p "Upt2025" scp -o StrictHostKeyChecking=no ca.pem etcd.pem etcd-key.pem root@${ETCD1_IP}:/var/lib/etcd/
+    sshpass -p "Upt2025" scp -o StrictHostKeyChecking=no ca.pem etcd.pem etcd-key.pem root@${ETCD2_IP}:/var/lib/etcd/
+    sshpass -p "Upt2025" scp -o StrictHostKeyChecking=no ca.pem etcd.pem etcd-key.pem root@${ETCD3_IP}:/var/lib/etcd/
+
+fi
+
+
+# Agregar variables de entorno para etcdctl
+cat <<EOF >> /root/.bashrc
+export ETCDCTL_CACERT="/var/lib/etcd/ca.pem"
+export ETCDCTL_CERT="/var/lib/etcd/etcd.pem"
+export ETCDCTL_KEY="/var/lib/etcd/etcd-key.pem"
+EOF
+
+source /root/.bashrc
+
 
 # Iniciar servicio etcd
-sudo systemctl start etcd
-
-END
-
-
+# sudo systemctl start etcd
