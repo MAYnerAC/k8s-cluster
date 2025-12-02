@@ -5,6 +5,13 @@ NETWORK_PREFIX=$2
 
 echo -e "\n=========================================== loadbalancer.sh ===========================================\n"
 
+# IPs de los masters
+MASTER1_IP="${NETWORK_PREFIX}.101"
+MASTER2_IP="${NETWORK_PREFIX}.102"
+MASTER3_IP="${NETWORK_PREFIX}.103"
+LOADBALANCER_IP="${NETWORK_PREFIX}.110"
+
+# Instalar HAProxy
 sudo apt update
 sudo apt install haproxy -y
 
@@ -16,7 +23,7 @@ sudo systemctl enable haproxy
 
 cat <<EOF > haproxy.cfg
 frontend kubernetes-frontend
-    bind ${NETWORK_PREFIX}.110:6443
+    bind ${LOADBALANCER_IP}:6443
     mode tcp
     option tcplog
     timeout client 10s
@@ -28,9 +35,9 @@ backend kubernetes-backend
     mode tcp
     option tcp-check
     balance roundrobin
-    server k8s-master1 ${NETWORK_PREFIX}.101:6443 check fall 3 rise 2
-    server k8s-master2 ${NETWORK_PREFIX}.102:6443 check fall 3 rise 2
-    server k8s-master3 ${NETWORK_PREFIX}.103:6443 check fall 3 rise 2
+    server k8s-master1 ${MASTER1_IP}:6443 check fall 3 rise 2
+    server k8s-master2 ${MASTER2_IP}:6443 check fall 3 rise 2
+    server k8s-master3 ${MASTER3_IP}:6443 check fall 3 rise 2
 
 frontend nodeport-frontend
     bind *:30000-35000
@@ -44,9 +51,9 @@ backend nodeport-backend
     timeout server 10s
     mode tcp
     balance roundrobin
-    server nodeport-0 ${NETWORK_PREFIX}.101
-    server nodeport-1 ${NETWORK_PREFIX}.102
-    server nodeport-2 ${NETWORK_PREFIX}.103
+    server nodeport-0 ${MASTER1_IP}
+    server nodeport-1 ${MASTER2_IP}
+    server nodeport-2 ${MASTER3_IP}
 EOF
 
 sudo mv haproxy.cfg /etc/haproxy/haproxy.cfg
