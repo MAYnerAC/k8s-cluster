@@ -143,13 +143,12 @@ timeouts:
   tlsBootstrap: 5m0s
   upgradeManifests: 5m0s
 ---
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: ClusterConfiguration
 apiServer:
   certSANs:
     - "${LOADBALANCER_IP}"
     - "127.0.0.1"
----
-apiVersion: kubeadm.k8s.io/v1beta4
-kind: ClusterConfiguration
 caCertificateValidityPeriod: 87600h0m0s
 certificateValidityPeriod: 8760h0m0s
 certificatesDir: /etc/kubernetes/pki
