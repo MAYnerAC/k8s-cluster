@@ -11,6 +11,17 @@ MASTER2_IP="${NETWORK_PREFIX}.102"
 MASTER3_IP="${NETWORK_PREFIX}.103"
 LOADBALANCER_IP="${NETWORK_PREFIX}.110"
 
+
+echo "----------------------------------------"
+echo "   CONFIGURACION DEL LOADBALANCER"
+echo "----------------------------------------"
+echo "  MASTER1_IP      : $MASTER1_IP"
+echo "  MASTER2_IP      : $MASTER2_IP"
+echo "  MASTER3_IP      : $MASTER3_IP"
+echo "  LOADBALANCER_IP : $LOADBALANCER_IP"
+echo "----------------------------------------"
+echo ""
+
 # Instalar HAProxy
 sudo apt update
 sudo apt install haproxy -y
