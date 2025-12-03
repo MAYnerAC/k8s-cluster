@@ -103,7 +103,7 @@ mkdir -vp /etcd/kubernetes/pki/etcd/
 
 
 # Token para bootstrap de kubeadm
-K8S_TOKEN=$(kubeadm token create)
+K8S_TOKEN=$(kubeadm token generate) # kubeadm token create
 
 # Certificate key para unir otros masters
 K8S_CERT_KEY=$(kubeadm certs certificate-key)
