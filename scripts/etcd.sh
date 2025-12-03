@@ -46,7 +46,7 @@ apt install -y curl sshpass
 
 # Descargar e instalar etcd
 
-ETCD_VER=v3.5.10
+ETCD_VER=v3.5.25 # 3.5.10
 
 # choose either URL
 GOOGLE_URL=https://storage.googleapis.com/etcd
@@ -57,7 +57,8 @@ rm -f /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
 rm -rf /tmp/etcd-download-test && mkdir -p /tmp/etcd-download-test
 
 curl -L ${DOWNLOAD_URL}/${ETCD_VER}/etcd-${ETCD_VER}-linux-amd64.tar.gz -o /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
-tar xzvf /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz -C /tmp/etcd-download-test --strip-components=1
+# tar xzvf /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz -C /tmp/etcd-download-test --strip-components=1
+tar xzvf /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz -C /tmp/etcd-download-test --strip-components=1 --no-same-owner
 rm -f /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
 
 # Instalar los binarios de etcd en "/usr/local/bin"
