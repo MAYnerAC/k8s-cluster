@@ -182,6 +182,11 @@ if [ "$NODE_NAME" != "master1" ]; then
 fi
 
 
+# kubeadm init --config kubeadm-config.yml --upload-certs --dry-run
+
+# kubeadm config images pull --config kubeadm-config.yml
+# crictl images
+
 # kubeadm init --config /root/kubeadm-config.yml --upload-certs
 # kubeadm init --config kubeadm-config.yml --upload-certs
 
