@@ -17,7 +17,7 @@ bash /vagrant/scripts/config.sh "$ROLE" "$NETWORK_PREFIX"
 
 # K8s
 if [ "$ROLE" = "k8s" ]; then
-    bash /vagrant/scripts/kubernetes.sh
+    bash /vagrant/scripts/kubernetes.sh "$ROLE" "$NETWORK_PREFIX"
 fi
 
 # ETCDs

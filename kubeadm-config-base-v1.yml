@@ -1,22 +1,21 @@
 apiVersion: kubeadm.k8s.io/v1beta4
-kind: InitConfiguration
 bootstrapTokens:
 - groups:
   - system:bootstrappers:kubeadm:default-node-token
-  token: ${K8S_TOKEN}     # abcdef.0123456789abcdef
+  token: abcdef.0123456789abcdef
   ttl: 24h0m0s
   usages:
   - signing
   - authentication
-certificateKey: ${K8S_CERT_KEY}
+kind: InitConfiguration
 localAPIEndpoint:
-  advertiseAddress: ${MASTER1_IP}
+  advertiseAddress: 1.2.3.4
   bindPort: 6443
 nodeRegistration:
   criSocket: unix:///var/run/containerd/containerd.sock
   imagePullPolicy: IfNotPresent
   imagePullSerial: true
-  name: ${NODE_NAME}
+  name: node
   taints: null
 timeouts:
   controlPlaneComponentHealthCheck: 4m0s
@@ -27,32 +26,21 @@ timeouts:
   tlsBootstrap: 5m0s
   upgradeManifests: 5m0s
 ---
-apiServer:
-  certSANs:
-    - "${LOADBALANCER_IP}"
-    - "127.0.0.1"
----
+apiServer: {}
 apiVersion: kubeadm.k8s.io/v1beta4
-kind: ClusterConfiguration
 caCertificateValidityPeriod: 87600h0m0s
 certificateValidityPeriod: 8760h0m0s
 certificatesDir: /etc/kubernetes/pki
 clusterName: kubernetes
-controlPlaneEndpoint: "${LOADBALANCER_IP}:6443"
 controllerManager: {}
 dns: {}
 encryptionAlgorithm: RSA-2048
 etcd:
-  external:
-    endpoints:
-      - "https://${ETCD1_IP}:2379"
-      - "https://${ETCD2_IP}:2379"
-      - "https://${ETCD3_IP}:2379"
-    caFile: "/etcd/kubernetes/pki/etcd/ca.pem"
-    certFile: "/etcd/kubernetes/pki/etcd/etcd.pem"
-    keyFile: "/etcd/kubernetes/pki/etcd/etcd-key.pem"
+  local:
+    dataDir: /var/lib/etcd
 imageRepository: registry.k8s.io
-kubernetesVersion: ${K8S_VERSION}   # 1.34.0
+kind: ClusterConfiguration
+kubernetesVersion: 1.34.0
 networking:
   dnsDomain: cluster.local
   serviceSubnet: 10.96.0.0/12
