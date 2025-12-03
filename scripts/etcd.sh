@@ -138,11 +138,19 @@ if [ "$NODE_NAME" = "etcd1" ]; then
     # Firmar certificado
     openssl x509 -req -in etcd-csr.pem -CA ca.pem -CAkey ca-key.pem -CAcreateserial -days 3650 -out etcd.pem -sha256 -extfile extfile.cnf
 
-    # cd /var/lib/etcd/
+
     # cd /root/openssl
+    
     sshpass -p "Upt2025" scp -o StrictHostKeyChecking=no ca.pem etcd.pem etcd-key.pem root@${ETCD1_IP}:/var/lib/etcd/
     sshpass -p "Upt2025" scp -o StrictHostKeyChecking=no ca.pem etcd.pem etcd-key.pem root@${ETCD2_IP}:/var/lib/etcd/
     sshpass -p "Upt2025" scp -o StrictHostKeyChecking=no ca.pem etcd.pem etcd-key.pem root@${ETCD3_IP}:/var/lib/etcd/
+    
+    # sshpass -p "Upt2025" scp -o StrictHostKeyChecking=no ca.pem etcd.pem etcd-key.pem root@192.168.0.101:/etcd/kubernetes/pki/etcd/
+    # sshpass -p "Upt2025" scp -o StrictHostKeyChecking=no ca.pem etcd.pem etcd-key.pem root@192.168.0.102:/etcd/kubernetes/pki/etcd/
+    # sshpass -p "Upt2025" scp -o StrictHostKeyChecking=no ca.pem etcd.pem etcd-key.pem root@192.168.0.103:/etcd/kubernetes/pki/etcd/
+
+    # cd /var/lib/etcd/
+    # cd /etcd/kubernetes/pki/etcd/
 
 fi
 
