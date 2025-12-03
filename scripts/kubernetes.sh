@@ -191,3 +191,20 @@ fi
 # kubeadm init --config kubeadm-config.yml --upload-certs
 
 
+
+# mkdir -p $HOME/.kube
+# sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+# sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+
+# curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | sudo bash
+# helm version
+# helm repo add cilium https://helm.cilium.io/
+# helm repo update
+# helm template cilium cilium/cilium --version 1.18.2 --namespace kube-system > cilium.yaml
+# kubectl apply -f cilium.yaml
+# nc 127.0.0.1 6443 -zv -w 2
+
+
+# kubectl get nodes
+# kubectl get pods -A
